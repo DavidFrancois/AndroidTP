@@ -10,5 +10,4 @@ class Game {
     var url: String? = ""
     var description_fr: String? = ""
     var description_en: String? = ""
-
 }

@@ -1,5 +1,6 @@
 package com.android.cours.hellogames
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -28,7 +29,7 @@ class MainActivity : AppCompatActivity() {
     // an object implementing the interface to the WebService
     val service: WebServiceInterface = retrofit.create(WebServiceInterface::class.java)
 
-    val callback = object : Callback<List<Game>> {
+    val listCallback = object : Callback<List<Game>> {
         override fun onFailure(call: Call<List<Game>>?, t: Throwable?) {
             // Code here what happens if calling the WebService fails
             Log.d("TAG", "WebService call failed")
@@ -46,21 +47,47 @@ class MainActivity : AppCompatActivity() {
                     if (responseData != null) {
                         data.addAll(responseData)
                         Log.d("TAG", "WebService success : " + data.size)
-//                        Log.d("TAG", "Name : " + data[0].name)
 
                         button.text = data[0].name
                         button2.text = data[1].name
                         button3.text = data[2].name
                         button4.text = data[3].name
+
+                        button.setOnClickListener {
+                            val explicitIntent = Intent(this@MainActivity, DetailActivity::class.java)
+                            explicitIntent.putExtra("id", data[0].id)
+                            startActivity(explicitIntent)
+                        }
+
+                        button2.setOnClickListener {
+                            val explicitIntent = Intent(this@MainActivity, DetailActivity::class.java)
+                            explicitIntent.putExtra("id", data[1].id)
+                            startActivity(explicitIntent)
+                        }
+
+                        button3.setOnClickListener {
+                            val explicitIntent = Intent(this@MainActivity, DetailActivity::class.java)
+                            explicitIntent.putExtra("id", data[2].id)
+                            startActivity(explicitIntent)
+                        }
+
+                        button4.setOnClickListener {
+                            val explicitIntent = Intent(this@MainActivity, DetailActivity::class.java)
+                            explicitIntent.putExtra("id", data[3].id)
+                            startActivity(explicitIntent)
+                        }
                     }
                 }
             }
         }
     }
 
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        service.listGames().enqueue(callback)
+        service.listGames().enqueue(listCallback)
+
     }
 }
